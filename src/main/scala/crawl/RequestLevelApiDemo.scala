@@ -33,7 +33,6 @@ trait RequestLevelApiDemo {
     val startTime = Platform.currentTime
     for {
       response <- IO(Http).ask(HttpRequest(GET, Uri(s"http://$uri"))).mapTo[HttpResponse]
-      _ <- IO(Http) ? Http.CloseAll
     } yield {
       val startAtMillis = startTime - system.startTime
       val durationInMillis = Platform.currentTime - startTime
