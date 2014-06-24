@@ -52,7 +52,15 @@ object FutureCrawlMain extends App
   }
 
   val reportSeq: (Try[Seq[Result]]) => Unit = {
-    case Success(res) => log.info("Hosts are running {}", res); shutdown()
+    case Success(res) =>
+      log.info("Result:")
+      res.sortBy {
+        case _: Runs => 0
+        case _:NoServerHeader => 1
+        case _ => 2
+      }.foreach(x => log.info(x.toString))
+
+      shutdown()
     case Failure(error) => log.warning("Error: {}", error); shutdown()
   }
 
