@@ -27,7 +27,7 @@ trait RequestLevelApiDemo {
   // to figure out which host to send the request to. It then sets up a HostConnector for that host
   // (if it doesn't exist yet) and forwards it the request.
   /**A slightly modified version of the method demoRequestLevelApi from the official Spray demo.*/
-  def requestProductVersion(uri: String)(implicit system: ActorSystem): Future[ProductVersion] = {
+  def requestProductVersion(uri: String)(implicit system: ActorSystem): Future[Option[ProductVersion]] = {
     val uriCompleted = if(uri.indexOf('/') < 0) uri+'/' else uri
     import system.dispatcher  // execution context for future transformation below
     val startTime = Platform.currentTime
@@ -38,7 +38,7 @@ trait RequestLevelApiDemo {
       val startAtMillis = startTime - system.startTime
       val durationInMillis = Platform.currentTime - startTime
       system.log.info(s"Get URI $uri responded '${response.status}' with ${response.entity.data.length} bytes. Started at $startAtMillis ms, lasted $durationInMillis ms.")
-      response.header[HttpHeaders.Server].get.products.head
+      response.header[HttpHeaders.Server].map(_.products.head)
     }
   }
 

@@ -23,17 +23,22 @@ object FutureCrawlMain extends App
   val uris = Seq(
     "spray.io", "www.wikipedia.org"
   //TODO Works well with only 2 URIs, sometimes also with 3 URIs, but does not scale to e.g. 5 URIs!
-//    , "scala-lang.org"
-//    , "doc.akka.io", "public.beuth-hochschule.de/~knabe/", "fb6.beuth-hochschule.de", "stackoverflow.com/questions/tagged/scala"
-//   , "esperanto.de", "tatoeba.org"
+   ,"stackoverflow.com/questions/tagged/scala"
+    , "scala-lang.org"
+   , "doc.akka.io", "public.beuth-hochschule.de/~knabe/", "fb6.beuth-hochschule.de"
+   , "esperanto.de", "tatoeba.org"
   )
 
   sealed trait Result
   case class Runs(uri: String, productVersion: ProductVersion) extends Result
+  case class NoServerHeader(uri: String) extends Result
   case class DidntAnswer(uri: String, problem: String) extends Result
 
   def requestWithErrorHandling(uri: String): Future[Result] =
-    requestProductVersion(uri).map(Runs(uri, _)).recover { case NonFatal(e) => DidntAnswer(uri, e.getMessage) }
+    requestProductVersion(uri).map {
+      case Some(version) => Runs(uri, version)
+      case None => NoServerHeader(uri)
+    }.recover { case NonFatal(e) => DidntAnswer(uri, e.getMessage) }
 
   //The futures are constructed immediately one after another and are then running.
   val futures = uris.map(requestWithErrorHandling)
