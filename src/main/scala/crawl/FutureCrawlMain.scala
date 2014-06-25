@@ -22,9 +22,9 @@ object FutureCrawlMain extends App
   val uris = Seq(
     "spray.io", "www.wikipedia.org"
   //TODO Works well with only 2 URIs, sometimes also with 3 URIs, but does not scale to e.g. 5 URIs!
-//    , "scala-lang.org"
-//    , "doc.akka.io", "public.beuth-hochschule.de/~knabe/", "fb6.beuth-hochschule.de", "stackoverflow.com/questions/tagged/scala"
-//   , "esperanto.de", "tatoeba.org"
+//    , "scala-lang.org", "doc.akka.io", "public.beuth-hochschule.de/~knabe/"
+//    , "fb6.beuth-hochschule.de", "stackoverflow.com/questions/tagged/scala"
+//    , "esperanto.de", "tatoeba.org"
   )
   //The futures are constructed immediately one after another and are then running.
   val futures = uris.map(requestProductVersion)
