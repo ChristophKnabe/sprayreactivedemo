@@ -13,6 +13,7 @@ When trying with 3 URIs, some of them fail.
 When trying with 4 or more URIs usually all of them fail.
 
 When trying sequentially by application *crawl.SequentialCrawlMain*, all runs well.
+All runs were done directly in IntelliJ IDEA 13.1.3.
 
 The applications in package *crawl* are derived from the *spray-can* demo application from
     https://github.com/spray/spray/tree/master/examples/spray-can/simple-http-client/src/main/scala/spray/examples
