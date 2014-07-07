@@ -2,6 +2,7 @@
 #
 # A more capable sbt runner, coincidentally also called sbt.
 # Author: Paul Phillips <paulp@typesafe.com>
+# Taken from https://github.com/paulp/sbt-extras
 
 # todo - make this dynamic
 declare -r sbt_release_version="0.13.2"
