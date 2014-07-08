@@ -16,13 +16,19 @@ import akka.event.Logging
 /**Crawls the browsableURIs asynchronously by many Actors and logs statistics about how long it takes for each request and altogether.*/
 object ActorPerRequestCrawlMain extends App {
 
-  // we always need an ActorSystem to host our application in
-  implicit val system = ActorSystem("webcrawl")
-  val log = Logging(system, getClass)
-  val statisticsActor = StatisticsActor(system, getClass.getSimpleName)
+  _execute() //for exercising the JVM
+  _execute() //for real measurement
 
-  val uris = browsableURIs.take(9999)
-  val managerActor = system.actorOf(Props(classOf[ManagerActor], uris, statisticsActor), name = "manager")
+  private def _execute(){
+    // we always need an ActorSystem to host our application in
+    implicit val system = ActorSystem("webcrawl")
+    val log = Logging(system, getClass)
+    val statisticsActor = StatisticsActor(system, getClass.getSimpleName)
+
+    val uris = browsableURIs.take(9999)
+    val managerActor = system.actorOf(Props(classOf[ManagerActor], uris, statisticsActor), name = "manager")
+    system.awaitTermination()
+  }
 
 }
 
